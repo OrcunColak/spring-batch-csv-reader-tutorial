@@ -1,4 +1,4 @@
-package com.colak.springbatchcsvreadertutorial.controller;
+package com.colak.springtutorial.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -23,5 +23,4 @@ public class BatchController {
         JobParameters params = new JobParametersBuilder().addString("PARAM", param).toJobParameters();
         jobLauncher.run(job, params);
     }
-
 }

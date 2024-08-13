@@ -1,4 +1,4 @@
-package com.colak.springbatchcsvreadertutorial.config;
+package com.colak.springtutorial.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -56,6 +56,4 @@ public class CSVBatchConfig {
         reader.setLineMapper(lineMapper);
         return reader;
     }
-
-
 }

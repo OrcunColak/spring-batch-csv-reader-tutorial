@@ -1,4 +1,4 @@
-package com.colak.springbatchcsvreadertutorial.config;
+package com.colak.springtutorial.config;
 
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;

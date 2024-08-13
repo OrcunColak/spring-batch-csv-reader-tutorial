@@ -1,4 +1,4 @@
-package com.colak.springbatchcsvreadertutorial.config;
+package com.colak.springtutorial.config;
 
 import lombok.Getter;
 import lombok.Setter;
