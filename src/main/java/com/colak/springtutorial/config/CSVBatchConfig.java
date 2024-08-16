@@ -16,6 +16,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.PlatformTransactionManager;
 
+// Spring Batch 4 to 5 migration breaking changes
+// See https://levelup.gitconnected.com/spring-batch-4-to-5-migration-breaking-changes-9bac1c063dc5
 @Configuration
 @Slf4j
 public class CSVBatchConfig {
@@ -24,17 +26,21 @@ public class CSVBatchConfig {
     private Resource csvFile;
 
     @Bean
-    public Job job(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Job job(JobRepository jobRepository, Step marketDataCsvStep) {
+        // We are now required to pass in JobRepository upon using JobBuilder
         return new JobBuilder("job", jobRepository)
-                .start(marketDataCsvStep(jobRepository, transactionManager))
+                .start(marketDataCsvStep)
                 .build();
     }
 
 
     @Bean
     public Step marketDataCsvStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+        // We are now required to pass in JobRepository upon using StepBuilder
+        // Tasklet and Chunk processing in the Step bean requires a PlatformTransactionManager.
         return new StepBuilder("step_first", jobRepository).<MarketData, MarketData>chunk(4, transactionManager)
                 .reader(marketDataCsvReader())
+                // Chunk processing now processes Chunk datatype instead of a List
                 .writer(chunk -> chunk.forEach(item -> log.info("Market Data: {}", item)))
                 .build();
     }
