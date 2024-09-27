@@ -11,7 +11,6 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
-import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -90,7 +89,11 @@ public class CSVBatchConfig {
                 .resource(csvFile)           // Resource (CSV file)
                 .linesToSkip(1)              // Skip the header line
                 .delimited()                 // Enable delimited tokenizer
-                .delimiter(DelimitedLineTokenizer.DELIMITER_COMMA)              // Specify the delimiter (comma)
+                // These method are just examples
+                // .delimiter(DelimitedLineTokenizer.DELIMITER_COMMA)              // Specify the delimiter (comma)
+                // .quoteCharacter(DelimitedLineTokenizer.DEFAULT_QUOTE_CHARACTER)
+
+                // Set names of FieldSet that we can use in MarketDataFieldSetMapper
                 .names("TID", "TickerName", "TickerDescription") // Column names
                 .fieldSetMapper(new MarketDataFieldSetMapper()) // Custom FieldSetMapper
                 .build();
