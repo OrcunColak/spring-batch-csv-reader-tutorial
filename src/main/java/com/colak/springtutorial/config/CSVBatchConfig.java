@@ -7,10 +7,12 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
+import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.file.FlatFileParseException;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import org.springframework.batch.item.support.CompositeItemProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,6 +46,7 @@ public class CSVBatchConfig {
         return new StepBuilder("step_first", jobRepository)
                 .<MarketData, MarketData>chunk(4, transactionManager)
                 .reader(marketDataCsvReader())
+                .processor(compositeProcessor())
                 // Chunk processing now processes Chunk datatype instead of a List
                 .writer(chunk -> chunk.forEach(item -> log.info("Market Data: {}", item)))
 
@@ -63,6 +66,21 @@ public class CSVBatchConfig {
                     }
                 })
                 .build();
+    }
+
+    @Bean
+    public CompositeItemProcessor<MarketData, MarketData> compositeProcessor() {
+        ItemProcessor<MarketData, MarketData> processor1 = marketData -> {
+            log.info("ItemProcessor1 : {}", marketData);
+            return marketData;
+        };
+
+        ItemProcessor<MarketData, MarketData> processor2 = marketData -> {
+            log.info("ItemProcessor2 : {}", marketData);
+            return marketData;
+        };
+        // compositeProcessor.setDelegates(processors);
+        return new CompositeItemProcessor<>(processor1, processor2);
     }
 
     @Bean
