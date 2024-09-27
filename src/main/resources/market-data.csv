@@ -1,3 +1,5 @@
 TID,TickerName,TickerDescription
-1,Ticker1,Description1
-2,Ticker2,Description2
+1,GOOG,Google Inc.
+2,AAPL,Apple Inc.
+wrong_data,MSFT,Microsoft Corporation
+4,TSLA,Tesla Inc.
