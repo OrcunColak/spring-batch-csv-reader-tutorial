@@ -2,4 +2,11 @@ TID,TickerName,TickerDescription
 1,GOOG,Google Inc.
 2,AAPL,Apple Inc.
 wrong_data,MSFT,Microsoft Corporation
-4,TSLA,Tesla Inc.
+3,AMZN,Amazon.com Inc.
+4,MSFT,Microsoft Corporation
+5,TSLA,Tesla Inc.
+6,NVDA,NVIDIA Corporation
+7,FB,Meta Platforms Inc.
+8,BRK.A,Berkshire Hathaway Inc.
+9,V,Visa Inc.
+10,JPM,JPMorgan Chase & Co.

@@ -1,5 +1,6 @@
 package com.colak.springtutorial.config;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.SkipListener;
@@ -23,23 +24,27 @@ import java.io.IOException;
 // Spring Batch 4 to 5 migration breaking changes
 // See https://levelup.gitconnected.com/spring-batch-4-to-5-migration-breaking-changes-9bac1c063dc5
 @Configuration
+@RequiredArgsConstructor
 @Slf4j
 public class CSVBatchConfig {
 
     @Value("classpath:/market-data.csv")
     private Resource csvFile;
 
+    private final JobRepository jobRepository;
+    private final PlatformTransactionManager transactionManager;
+
     @Bean
-    public Job job(JobRepository jobRepository, Step marketDataCsvStep) {
+    public Job job(JobRepository jobRepository, Step faultTolerantMarketDataCsvStep) {
         // We are now required to pass in JobRepository upon using JobBuilder
         return new JobBuilder("job", jobRepository)
-                .start(marketDataCsvStep)
+                .start(faultTolerantMarketDataCsvStep)
                 .build();
     }
 
 
     @Bean
-    public Step faultTolerantMarketDataCsvStep(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
+    public Step faultTolerantMarketDataCsvStep() {
         // We are now required to pass in JobRepository upon using StepBuilder
         // Tasklet and Chunk processing in the Step bean requires a PlatformTransactionManager.
         return new StepBuilder("step_first", jobRepository)
